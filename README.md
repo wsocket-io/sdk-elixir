@@ -23,7 +23,7 @@ mix deps.get
 ## Quick Start
 
 ```elixir
-{:ok, client} = WSocketIO.Client.start_link("wss://your-server.com", "your-api-key")
+{:ok, client} = WSocketIO.Client.start_link("wss://node00.wsocket.online", "your-api-key")
 
 WSocketIO.Client.on_connect(client, fn ->
   IO.puts("Connected!")
@@ -73,7 +73,7 @@ end)
 ## Push Notifications
 
 ```elixir
-push = WSocketIO.Push.new("https://your-server.com", "secret", "app1")
+push = WSocketIO.Push.new("https://node00.wsocket.online", "secret", "app1")
 
 # Register FCM device
 WSocketIO.Push.register_fcm(push, device_token: fcm_token, member_id: "user-123")
