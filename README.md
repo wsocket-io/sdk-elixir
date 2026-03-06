@@ -1,6 +1,9 @@
 # wSocket SDK for Elixir
 
-Official Elixir SDK for wSocket — realtime pub/sub, presence, history, and push notifications.
+Official Elixir SDK for [wSocket](https://wsocket.io) — realtime pub/sub, presence, history, and push notifications.
+
+[![Hex.pm](https://img.shields.io/hexpm/v/wsocket_io)](https://hex.pm/packages/wsocket_io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Installation
 
