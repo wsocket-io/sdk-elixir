@@ -27,7 +27,8 @@ defmodule WSocketIO.MixProject do
     [
       {:websockex, "~> 0.4.3"},
       {:jason, "~> 1.4"},
-      {:req, "~> 0.4"}
+      {:req, "~> 0.4"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
