@@ -250,7 +250,53 @@ defmodule WSocketIO.Push do
   end
 
   def delete_subscription(%__MODULE__{} = push, subscription_id) do
-    post(push, "unregister", %{"subscriptionId" => subscription_id})
+    delete(push, "subscriptions/#{subscription_id}")
+  end
+
+  def add_channel(%__MODULE__{} = push, member_id, channel) do
+    post(push, "channels/add", %{"memberId" => member_id, "channel" => channel})
+  end
+
+  def remove_channel(%__MODULE__{} = push, member_id, channel) do
+    post(push, "channels/remove", %{"memberId" => member_id, "channel" => channel})
+  end
+
+  def get_vapid_key(%__MODULE__{} = push) do
+    url = "#{push.base_url}/api/push/vapid-key"
+    headers = [
+      {"authorization", "Bearer #{push.token}"},
+      {"x-app-id", push.app_id}
+    ]
+    case Req.get(url, headers: headers) do
+      {:ok, %{body: body}} -> Map.get(body, "vapidPublicKey")
+      _ -> nil
+    end
+  end
+
+  def list_subscriptions(%__MODULE__{} = push, opts \\ []) do
+    params = []
+    params = if Keyword.has_key?(opts, :member_id), do: ["memberId=#{Keyword.get(opts, :member_id)}" | params], else: params
+    params = if Keyword.has_key?(opts, :platform), do: ["platform=#{Keyword.get(opts, :platform)}" | params], else: params
+    params = if Keyword.has_key?(opts, :limit), do: ["limit=#{Keyword.get(opts, :limit)}" | params], else: params
+    qs = if params == [], do: "", else: "?" <> Enum.join(params, "&")
+    url = "#{push.base_url}/api/push/subscriptions#{qs}"
+    headers = [
+      {"authorization", "Bearer #{push.token}"},
+      {"x-app-id", push.app_id}
+    ]
+    case Req.get(url, headers: headers) do
+      {:ok, %{body: body}} -> body
+      _ -> []
+    end
+  end
+
+  defp delete(%__MODULE__{} = push, path) do
+    url = "#{push.base_url}/api/push/#{path}"
+    headers = [
+      {"authorization", "Bearer #{push.token}"},
+      {"x-app-id", push.app_id}
+    ]
+    Req.delete!(url, headers: headers)
   end
 
   defp post(%__MODULE__{} = push, path, body) do
