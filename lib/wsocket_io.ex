@@ -243,6 +243,16 @@ defmodule WSocketIO.Push do
     })
   end
 
+  def unregister(%__MODULE__{} = push, member_id, platform \\ nil) do
+    body = %{"memberId" => member_id}
+    body = if platform, do: Map.put(body, "platform", platform), else: body
+    post(push, "unregister", body)
+  end
+
+  def delete_subscription(%__MODULE__{} = push, subscription_id) do
+    post(push, "unregister", %{"subscriptionId" => subscription_id})
+  end
+
   defp post(%__MODULE__{} = push, path, body) do
     url = "#{push.base_url}/api/push/#{path}"
     headers = [
