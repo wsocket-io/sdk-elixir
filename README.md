@@ -87,6 +87,16 @@ WSocketIO.Push.send_to_member(push, "user-123",
 
 # Broadcast
 WSocketIO.Push.broadcast(push, payload: %{title: "Announcement", body: "Server update"})
+
+# Channel targeting
+WSocketIO.Push.add_channel(push, "subscription-id", "alerts")
+WSocketIO.Push.remove_channel(push, "subscription-id", "alerts")
+
+# VAPID key
+{:ok, key} = WSocketIO.Push.get_vapid_key(push)
+
+# List subscriptions
+{:ok, subs} = WSocketIO.Push.list_subscriptions(push, "user-123")
 ```
 
 ## Requirements
